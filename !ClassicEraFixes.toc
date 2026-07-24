@@ -5,7 +5,7 @@
 ## Author: c0degeek
 ## X-License: MIT
 ## X-Website: https://github.com/David-c0degeek/ClassicEraFixes
-## X-Curse-Project-ID: 000000
+## X-Curse-Project-ID: 1623244
 ## DefaultState: enabled
 ## LoadOnDemand: 0
 
