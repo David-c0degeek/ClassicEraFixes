@@ -1,0 +1,17 @@
+# BigWigs packager config — https://github.com/BigWigsMods/packager
+#
+# GitHub repo name cannot contain "!", but WoW requires the addon folder to be
+# named "!ClassicEraFixes" (the "!" sorts it ahead of every other addon so its
+# shims load first). package-as forces the folder name inside the zip.
+package-as: '!ClassicEraFixes'
+
+enable-nolib-creation: no
+
+# Files that ship in the repo but not in the packaged addon.
+ignore:
+  - README.md
+  - CHANGELOG.md
+  - .gitignore
+  - .pkgmeta
+  - .github
+  - tests

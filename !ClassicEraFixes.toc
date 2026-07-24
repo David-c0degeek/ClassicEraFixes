@@ -1,0 +1,12 @@
+## Interface: 11509
+## Title: |cff00ff96!ClassicEraFixes|r
+## Notes: Restores global API functions removed by Classic Era 1.15.9 so older addons keep working.
+## Version: @project-version@
+## Author: c0degeek
+## X-License: MIT
+## X-Website: https://github.com/David-c0degeek/ClassicEraFixes
+## X-Curse-Project-ID: 000000
+## DefaultState: enabled
+## LoadOnDemand: 0
+
+Fixes.lua

@@ -1,0 +1,27 @@
+name: Package and release
+
+on:
+  push:
+    tags:
+      - '**'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+
+      - name: Package and release
+        uses: BigWigsMods/packager@v2
+        env:
+          # GITHUB_TOKEN is provided automatically; it creates the GitHub release.
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+          # Add these as repo secrets to also upload to the corresponding site.
+          # A site is skipped silently when its token is unset.
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
+          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}

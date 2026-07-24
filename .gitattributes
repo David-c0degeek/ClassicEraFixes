@@ -1,0 +1,5 @@
+# Normalize line endings; keep addon text files LF in the repo and the packaged zip.
+* text=auto eol=lf
+*.lua text eol=lf
+*.toc text eol=lf
+*.md  text eol=lf
