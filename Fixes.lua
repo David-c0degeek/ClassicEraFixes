@@ -167,3 +167,60 @@ if _G.TargetFrame_Update == nil and _G.TargetFrame and type(_G.TargetFrame.Updat
 		end
 	end)
 end
+
+--------------------------------------------------------------------------------
+-- Load proof and status report
+--------------------------------------------------------------------------------
+-- This addon silently failing to load is indistinguishable, from the outside,
+-- from it loading and doing nothing: either way the old globals are missing and
+-- the addons that need them error. So record what happened somewhere that
+-- survives the session, and expose it through a slash command.
+
+do
+	local restored, missing = {}, {}
+
+	local names = {
+		"DisableAddOn", "EnableAddOn", "GetAddOnDependencies", "GetAddOnEnableState",
+		"GetAddOnInfo", "GetAddOnMetadata", "GetNumAddOns", "IsAddOnLoadOnDemand",
+		"IsAddOnLoaded", "LoadAddOn", "StripHyperlinks", "GuildRoster",
+		"SwapChatChannelByLocalID", "GetWatchedFactionInfo", "DebuffTypeColor",
+		"ChatFrame_OnHyperlinkShow", "TargetFrame_Update",
+	}
+
+	for i = 1, #names do
+		local name = names[i]
+		if _G[name] ~= nil then
+			restored[#restored + 1] = name
+		else
+			missing[#missing + 1] = name
+		end
+	end
+
+	local frame = CreateFrame("Frame")
+	frame:RegisterEvent("PLAYER_LOGIN")
+	frame:SetScript("OnEvent", function()
+		local version = C_AddOns and C_AddOns.GetAddOnMetadata
+			and C_AddOns.GetAddOnMetadata("!ClassicEraFixes", "Version") or "?"
+		ClassicEraFixesDB = {
+			version = version,
+			loadedAt = date and date("%Y-%m-%d %H:%M:%S") or nil,
+			build = select(2, GetBuildInfo()),
+			interface = select(4, GetBuildInfo()),
+			present = restored,
+			stillMissing = missing,
+		}
+	end)
+
+	SLASH_CLASSICERAFIXES1 = "/cef"
+	SLASH_CLASSICERAFIXES2 = "/classicerafixes"
+	SlashCmdList["CLASSICERAFIXES"] = function()
+		local out = DEFAULT_CHAT_FRAME
+		out:AddMessage("|cff00ff96!ClassicEraFixes|r loaded. Build "
+			.. tostring(select(2, GetBuildInfo())) .. ", interface "
+			.. tostring(select(4, GetBuildInfo())) .. ".")
+		out:AddMessage("  present: " .. table.concat(restored, ", "))
+		if #missing > 0 then
+			out:AddMessage("  |cffff5555still missing|r: " .. table.concat(missing, ", "))
+		end
+	end
+end

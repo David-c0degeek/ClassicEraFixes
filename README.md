@@ -6,10 +6,28 @@ Patch 1.15.9 moved a batch of global API functions into `C_*` namespaces and, un
 most retail deprecations, shipped **no compatibility shim** for the old global names.
 Addons that have not been updated call those names and throw Lua errors. `!ClassicEraFixes`
 restores the removed globals so those addons keep working until their authors update.
+It also includes a Classic Era 1.15.9 workaround for old item and recipe text
+remaining visible underneath a shorter tooltip.
 
-It is **not** a fix-all. It restores a specific, verified set of removed APIs (below).
-It does not patch addon-specific bugs, and it does nothing on any client where Blizzard
-still provides the original functions.
+The API restorations are limited to the verified globals below. Each restoration
+is skipped when Blizzard still provides the original function. The tooltip
+workaround runs only on interface version `11509`.
+
+## Tooltip cleanup
+
+When the shared GameTooltip is reused, old item or recipe lines can remain visible
+below its current contents. This can affect flight maps, auction buttons and
+other windows. The workaround hides named tooltip lines beyond `NumLines()` when
+the tooltip is displayed or its title is replaced.
+
+Active lines and addon-added information are preserved. Hidden text remains
+available to tooltip scanners, and no per-frame polling is used. The malformed
+tooltip state was captured and the workaround was tested in game; the addon
+originally responsible has not been conclusively identified.
+
+Use `/cef` or `/classicerafixes` to check that the addon loaded and see which
+compatibility APIs are available. A load-status record is saved in
+`ClassicEraFixesDB`.
 
 ## What it restores
 
@@ -28,7 +46,7 @@ still provides the original functions.
 
 Every restoration is **double-guarded**: it acts only if the global is missing *and* its
 replacement exists on the running client. On any client that still ships the original
-function, the addon does nothing. The folder name starts with `!` so it sorts ahead of
+function, that restoration does nothing. The folder name starts with `!` so it sorts ahead of
 every other addon and its shims are in place before anything calls them.
 
 `GetAddOnEnableState` is exposed with the **new** `(addon, character)` argument order —

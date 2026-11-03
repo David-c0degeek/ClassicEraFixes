@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.1
+
+- Hide stale text left beneath a shorter tooltip on Classic Era 1.15.9. This
+  addresses old item and recipe descriptions remaining visible on flight maps,
+  auction buttons and other uses of the shared GameTooltip.
+- Preserve active tooltip lines, including addon additions, and retain hidden text
+  for tooltip scanners. The workaround uses display hooks without update polling.
+- Add `/cef` and `/classicerafixes` to report the client build and available APIs,
+  with a load-status record in `ClassicEraFixesDB`.
+- Verified with Lua 5.1 behavioural checks and an in-game retest. The captured
+  surplus-line state is confirmed; the addon originally responsible is not known.
+
 ## 1.0.0
 
 Initial release. Restores global API functions removed by Classic Era patch

@@ -1,6 +1,6 @@
 ## Interface: 11509
 ## Title: |cff00ff96!ClassicEraFixes|r
-## Notes: Restores global API functions removed by Classic Era 1.15.9 so older addons keep working.
+## Notes: Restores older addon APIs and hides stale tooltip lines on Classic Era 1.15.9.
 ## Version: @project-version@
 ## Author: c0degeek
 ## X-License: MIT
@@ -8,5 +8,7 @@
 ## X-Curse-Project-ID: 1623244
 ## DefaultState: enabled
 ## LoadOnDemand: 0
+## SavedVariables: ClassicEraFixesDB
 
 Fixes.lua
+TooltipCleanup.lua
