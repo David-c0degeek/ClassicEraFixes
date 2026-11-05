@@ -20,10 +20,20 @@ below its current contents. This can affect flight maps, auction buttons and
 other windows. The workaround hides named tooltip lines beyond `NumLines()` when
 the tooltip is displayed or its title is replaced.
 
-Active lines and addon-added information are preserved. Hidden text remains
-available to tooltip scanners, and no per-frame polling is used. The malformed
-tooltip state was captured and the workaround was tested in game; the addon
-originally responsible has not been conclusively identified.
+The workaround tracks the rows it hides and restores them when a longer tooltip
+reuses them, preserving set pieces, set-bonus descriptions and addon additions.
+It checks pending rows when an item is set and during tooltip updates to handle
+lines added after display. Once no hidden rows remain, the update hook does
+nothing. Hidden text remains available to tooltip scanners.
+
+The malformed tooltip state was captured and the workaround was tested in game;
+the addon originally responsible has not been conclusively identified.
+
+Run the Lua 5.1 regression checks with Python and `lupa[lua51]` installed:
+
+```sh
+python tests/test_tooltip_cleanup.py
+```
 
 Use `/cef` or `/classicerafixes` to check that the addon loaded and see which
 compatibility APIs are available. A load-status record is saved in
